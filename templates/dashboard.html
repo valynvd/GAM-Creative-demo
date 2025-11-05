@@ -2,158 +2,161 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>GAM Creative</title>
 
   <style>
     :root {
-      --primary: #5B5BD6;
-      --primary-hover: #4949B8;
-      --primary-light: #F3F3FF;
-      --accent: #706FD3;
-      --bg: #F9FAFB;
-      --surface: #FFFFFF;
-      --border: #E5E7EB;
-      --text-main: #1F2937;
-      --text-muted: #6B7280;
-      --radius: 16px;
-      --shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+      --primary: #6C63FF;
+      --primary-hover: #5850d9;
+      --border: rgba(255, 255, 255, 0.2);
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-bg-strong: rgba(255, 255, 255, 0.4);
+      --text-main: #ffffff;
+      --text-soft: #e8e8e8;
+      --shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
     }
 
-
-
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", sans-serif;
     }
 
     body {
-      font-family: "Inter", "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text-main);
       min-height: 100vh;
-      line-height: 1.6;
+      background: linear-gradient(135deg, #1d1f27, #262a33);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 18px 32px;
-      font-weight: 700;
+      width: 100%;
+      padding: 22px 40px;
       font-size: 20px;
-      color: var(--text-main);
+      font-weight: 700;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
       position: sticky;
       top: 0;
-      z-index: 100;
-      backdrop-filter: blur(8px);
+      z-index: 20;
+    }
+
+    .hero {
+      text-align: center;
+      margin-top: 50px;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .hero .subtitle {
+      font-size: 15px;
+      color: var(--text-soft);
+      opacity: 0.75;
     }
 
     main {
-      max-width: 1300px;
-      margin: 0 auto;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
+      max-width: 1100px;
+      width: 100%;
+      padding: 40px;
     }
 
-    /* Grid layout */
     .layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      align-items: stretch;
+      gap: 26px;
     }
 
     .card {
-      background: var(--surface);
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 18px;
       box-shadow: var(--shadow);
+      padding-top: 4px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
     }
 
     .card-header {
-      padding: 18px 22px;
-      border-bottom: 1px solid var(--border);
-      font-weight: 700;
+      padding: 18px 24px;
       font-size: 16px;
-      background: #f9fafb;
+      font-weight: 600;
+      background: var(--glass-bg-strong);
+      border-bottom: 1px solid var(--border);
     }
 
     .card-body {
-      padding: 20px 24px;
-      flex: 1;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
+      gap: 18px;
     }
 
     label {
-      display: block;
-      margin-bottom: 6px;
       font-size: 14px;
-      font-weight: 600;
-      color: var(--text-main);
+      margin-bottom: 5px;
+      display: block;
+      color: var(--text-soft);
     }
 
+    select {
+      background: rgba(255, 255, 255, 0.12) !important;
+      color: #fff !important;
+    }
+
+    select option {
+      background: #2b2e36 !important;
+      color: #ffffff !important;
+    }
     select,
-    input[type="text"],
-    input[type="number"],
+    input,
     textarea {
       width: 100%;
+      padding: 12px;
       border-radius: 10px;
-      border: 1.5px solid var(--border);
-      padding: 10px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
       font-size: 14px;
-      transition: all 0.2s ease;
-      background: white;
+      transition: 0.25s;
     }
 
     select:focus,
     input:focus,
     textarea:focus {
+      border-color: var(--primary);
       outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-light);
+      background: rgba(255, 255, 255, 0.15);
     }
 
-    input[type="file"] {
-      padding: 6px 0;
-      font-size: 14px;
-    }
-
-    input[type="file"]::file-selector-button {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: 1.5px solid var(--border);
-      background: white;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    input[type="file"]::file-selector-button:hover {
-      border-color: var(--primary);
-      background: var(--bg);
+    textarea {
+      min-height: 230px;
+      resize: vertical;
+      font-family: "JetBrains Mono", monospace;
     }
 
     button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
       background: var(--primary);
       color: white;
       font-weight: 600;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-size: 14px;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25);
+      transition: 0.25s;
     }
 
     button:hover {
@@ -161,80 +164,26 @@
       transform: translateY(-1px);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 200px;
-      font-family: 'JetBrains Mono', monospace;
-      line-height: 1.5;
-      background: #f9fafb;
-      margin-bottom: 14px;
-    }
-
     .copy-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 14px;
     }
 
     .copy-toast-inline {
       opacity: 0;
-      font-size: 13px;
-      font-weight: 600;
-      color: white;
-      background: var(--text-main);
-      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.6);
       padding: 6px 10px;
-      transform: translateY(4px);
-      transition: all 0.25s ease;
+      border-radius: 6px;
+      transition: 0.25s;
+      font-size: 13px;
     }
 
     .copy-toast-inline.show {
       opacity: 1;
-      transform: translateY(0);
     }
 
-    .preview-card {
-      margin-top: 10px;
-    }
-
-    .preview-section {
-      margin-top: 30px;
-    }
-
-    .preview-container {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-
-    .preview-container.skinad {
-      border: none;
-      border-radius: 0;
-      box-shadow: none;
-    }
-
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-      display: block;
-    }
-
-    iframe.skin-preview {
-      height: 100vh;
-    }
-
-    .placeholder {
-      border: 2px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 70px 30px;
-      text-align: center;
-      color: var(--text-muted);
-      background: var(--bg);
-    }
-
-    @media (max-width: 1200px) {
+    @media (max-width: 900px) {
       .layout {
         grid-template-columns: 1fr;
       }
@@ -243,97 +192,103 @@
 </head>
 
 <body>
+
   <header>GAM Creative</header>
+
+  <div class="hero">
+    <h1>GAM Creative</h1>
+  </div>
 
   <main>
     <form method="POST" enctype="multipart/form-data">
       <div class="layout">
+
+        <!-- LEFT -->
         <div class="card">
-          <div class="card-header">Format</div>
+          <div class="card-header">Creative Settings</div>
           <div class="card-body">
+
             <div>
-              <div class="form-group">
-                <label>Ad Format</label>
-                <select name="format" onchange="this.form.submit()">
-                  <option value="skinad" {% if format=='skinad' %}selected{% endif %}>SkinAd</option>
-                  <option value="newstag" {% if format=='newstag' %}selected{% endif %}>Newstag</option>
-                </select>
-              </div>
+              <label>Ad Format</label>
+              <select name="format" onchange="this.form.submit()">
+                <option value="skinad" {% if format=='skinad' %}selected{% endif %}>SkinAd</option>
+                <option value="newstag" {% if format=='newstag' %}selected{% endif %}>Newstag</option>
+              </select>
+            </div>
 
-              {% if format == 'newstag' %}
-              <div class="form-group">
-                <label>Site</label>
-                <select name="site">
-                  <option value="default" {% if site=='default' %}selected{% endif %}>Default</option>
-                  <option value="kapanlagi" {% if site=='kapanlagi' %}selected{% endif %}>KapanLagi</option>
-                  <option value="liputan6" {% if site=='liputan6' %}selected{% endif %}>Liputan6</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Tag Text</label>
-                <input type="text" name="text" value="{{ text }}" placeholder="Trending">
-              </div>
-
-              <div class="form-group">
-                <label>Position</label>
-                <input type="number" name="position" min="0" value="{{ position }}" placeholder="0">
-              </div>
-              {% endif %}
-
-              {% if format == 'skinad' %}
-              <div class="form-group">
-                <label>Left Image</label>
-                <input type="file" name="left_img" accept="image/*">
-              </div>
-
-              <div class="form-group">
-                <label>Right Image</label>
-                <input type="file" name="right_img" accept="image/*">
-              </div>
-
-              <input type="hidden" name="left_saved" value="{{ left_img if left_img }}">
-              <input type="hidden" name="right_saved" value="{{ right_img if right_img }}">
-              {% endif %}
+            {% if format == 'newstag' %}
+            <div>
+              <label>Site</label>
+              <select name="site">
+                <option value="default" {% if site=='default' %}selected{% endif %}>Default</option>
+                <option value="kapanlagi" {% if site=='kapanlagi' %}selected{% endif %}>KapanLagi</option>
+                <option value="liputan6" {% if site=='liputan6' %}selected{% endif %}>Liputan6</option>
+              </select>
             </div>
 
             <div>
-              {% if format == 'skinad' %}
-              <button type="submit">Upload & Preview</button>
-              {% elif format == 'newstag' %}
-              <button type="submit">Update Preview</button>
-              {% endif %}
+              <label>Tag Text</label>
+              <input type="text" name="text" value="{{ text }}" placeholder="Trending">
             </div>
+
+            <div>
+              <label>Position</label>
+              <input type="number" name="position" min="0" value="{{ position }}">
+            </div>
+            {% endif %}
+
+            {% if format == 'skinad' %}
+            <div>
+              <label>Left Image</label>
+              <input type="file" name="left_img" accept="image/*">
+            </div>
+
+            <div>
+              <label>Right Image</label>
+              <input type="file" name="right_img" accept="image/*">
+            </div>
+
+            <input type="hidden" name="left_saved" value="{{ left_img }}">
+            <input type="hidden" name="right_saved" value="{{ right_img }}">
+            {% endif %}
+
+            {% if format == 'skinad' %}
+            <button type="submit">Upload & Preview</button>
+            {% else %}
+            <button type="submit">Update Preview</button>
+            {% endif %}
+
           </div>
         </div>
 
+        <!-- RIGHT -->
         <div class="card">
-          <div class="card-header">Generated Code</div>
+          <div class="card-header">Generated Snippet</div>
           <div class="card-body">
             <textarea id="snippetBox" readonly>{{ snippet }}</textarea>
+
             <div class="copy-row">
               <button type="button" onclick="copySnippet()">Copy Code</button>
-              <span id="copyToastInline" class="copy-toast-inline">✅ Copied!</span>
+              <span id="copyToastInline" class="copy-toast-inline">Copied!</span>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </form>
   </main>
 
   <script>
     function copySnippet() {
-      const textarea = document.getElementById("snippetBox");
+      const text = document.getElementById("snippetBox").value;
       const toast = document.getElementById("copyToastInline");
-      if (!textarea) return;
-
-      navigator.clipboard.writeText(textarea.value).then(() => {
+      navigator.clipboard.writeText(text).then(() => {
         toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 1500);
+        setTimeout(() => toast.classList.remove("show"), 1200);
       });
     }
   </script>
+
 </body>
 
 </html>

@@ -319,6 +319,17 @@
         </div>
       </div>
 
+      <div class="preview-section"></div>
+      <div class="card preview-card">
+        <div class="card-header">Preview</div>
+        <div class="card-body" style="padding:0;">
+          {% if format == 'newstag' %}
+          <div class="preview-container">
+            <iframe src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}"></iframe>
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </form>
   </main>
 

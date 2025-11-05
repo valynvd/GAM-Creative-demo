@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, url_for
-import os
+from flask import Flask, render_template, request, url_for, redirect
+import os, base64
 
 app = Flask(__name__, template_folder = "templates", static_folder = "static")
 
@@ -43,12 +43,16 @@ def dashboard():
     if "left_img" in request.files:
         f = request.files["left_img"]
         if f and f.filename:
-            left_img = f.filename
+            left_img = "data:image/png;base64," + base64.b64encode(f.read()).decode('utf-8')
 
     if "right_img" in request.files:
         f = request.files["right_img"]
         if f and f.filename:
-            right_img = f.filename
+            right_img = "data:image/png;base64," + base64.b64encode(f.read()).decode('utf-8')
+    
+    if request.method == "POST" and format == "skinad":
+        return redirect(url_for("preview_skinad", left=left_img, right=right_img))
+
 
     return render_template(
         "dashboard.html",

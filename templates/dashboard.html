@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>GAM Creative</title>
+
+  <style>
+    :root {
+      --primary: #5B5BD6;
+      --primary-hover: #4949B8;
+      --primary-light: #F3F3FF;
+      --accent: #706FD3;
+      --bg: #F9FAFB;
+      --surface: #FFFFFF;
+      --border: #E5E7EB;
+      --text-main: #1F2937;
+      --text-muted: #6B7280;
+      --radius: 16px;
+      --shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+    }
+
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 32px;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--text-main);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    main {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Grid layout */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 16px;
+      background: #f9fafb;
+    }
+
+    .card-body {
+      padding: 20px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    select,
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      padding: 10px 14px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      background: white;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    input[type="file"] {
+      padding: 6px 0;
+      font-size: 14px;
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      border-color: var(--primary);
+      background: var(--bg);
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25);
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 200px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.5;
+      background: #f9fafb;
+      margin-bottom: 14px;
+    }
+
+    .copy-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .copy-toast-inline {
+      opacity: 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      background: var(--text-main);
+      border-radius: 6px;
+      padding: 6px 10px;
+      transform: translateY(4px);
+      transition: all 0.25s ease;
+    }
+
+    .copy-toast-inline.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .preview-card {
+      margin-top: 10px;
+    }
+
+    .preview-section {
+      margin-top: 30px;
+    }
+
+    .preview-container {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .preview-container.skinad {
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      display: block;
+    }
+
+    iframe.skin-preview {
+      height: 100vh;
+    }
+
+    .placeholder {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 70px 30px;
+      text-align: center;
+      color: var(--text-muted);
+      background: var(--bg);
+    }
+
+    @media (max-width: 1200px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>GAM Creative</header>
+
+  <main>
+    <form method="POST" enctype="multipart/form-data">
+      <div class="layout">
+        <div class="card">
+          <div class="card-header">Format</div>
+          <div class="card-body">
+            <div>
+              <div class="form-group">
+                <label>Ad Format</label>
+                <select name="format" onchange="this.form.submit()">
+                  <option value="skinad" {% if format=='skinad' %}selected{% endif %}>SkinAd</option>
+                  <option value="newstag" {% if format=='newstag' %}selected{% endif %}>Newstag</option>
+                </select>
+              </div>
+
+              {% if format == 'newstag' %}
+              <div class="form-group">
+                <label>Site</label>
+                <select name="site">
+                  <option value="default" {% if site=='default' %}selected{% endif %}>Default</option>
+                  <option value="kapanlagi" {% if site=='kapanlagi' %}selected{% endif %}>KapanLagi</option>
+                  <option value="liputan6" {% if site=='liputan6' %}selected{% endif %}>Liputan6</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Tag Text</label>
+                <input type="text" name="text" value="{{ text }}" placeholder="Trending">
+              </div>
+
+              <div class="form-group">
+                <label>Position</label>
+                <input type="number" name="position" min="0" value="{{ position }}" placeholder="0">
+              </div>
+              {% endif %}
+
+              {% if format == 'skinad' %}
+              <div class="form-group">
+                <label>Left Image</label>
+                <input type="file" name="left_img" accept="image/*">
+              </div>
+
+              <div class="form-group">
+                <label>Right Image</label>
+                <input type="file" name="right_img" accept="image/*">
+              </div>
+
+              <input type="hidden" name="left_saved" value="{{ left_img if left_img }}">
+              <input type="hidden" name="right_saved" value="{{ right_img if right_img }}">
+              {% endif %}
+            </div>
+
+            <div>
+              {% if format == 'skinad' %}
+              <button type="submit">Upload & Preview</button>
+              {% elif format == 'newstag' %}
+              <button type="submit">Update Preview</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Generated Code</div>
+          <div class="card-body">
+            <textarea id="snippetBox" readonly>{{ snippet }}</textarea>
+            <div class="copy-row">
+              <button type="button" onclick="copySnippet()">Copy Code</button>
+              <span id="copyToastInline" class="copy-toast-inline">✅ Copied!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-section"></div>
+      <div class="card preview-card">
+        <div class="card-header">Preview</div>
+        <div class="card-body" style="padding:0;">
+          {% if format == 'newstag' %}
+          <div class="preview-container">
+            <iframe src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}"></iframe>
+          </div>
+          {% elif format == 'skinad' %}
+          {% if left_img and right_img and left_img|length > 0 and right_img|length > 0 %}
+          <div class="preview-container skinad">
+            <iframe class="skin-preview"
+              src="/preview/skinad?left={{ url_for('static', filename='uploads/' ~ left_img) | urlencode }}&right={{ url_for('static', filename='uploads/' ~ right_img) | urlencode }}"></iframe>
+          </div>
+          {% else %}
+          <div class="placeholder">Upload images to preview SkinAd</div>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    function copySnippet() {
+      const textarea = document.getElementById("snippetBox");
+      const toast = document.getElementById("copyToastInline");
+      if (!textarea) return;
+
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1500);
+      });
+    }
+  </script>
+</body>
+
+</html>

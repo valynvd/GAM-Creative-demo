@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .skin {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .skin img {
+            height: 100vh;
+            max-width: 300px;
+            object-fit: cover;
+        }
+
+        .skin.left {
+            left: 0;
+        }
+
+        .skin.right {
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if left %}
+    <a class="skin left" href="#">
+        <img src="{{ left }}" onerror="this.style.display='none'">
+    </a>
+    {% endif %}
+
+    {% if right %}
+    <a class="skin right" href="#">
+        <img src="{{ right }}" onerror="this.style.display='none'">
+    </a>
+    {% endif %}
+
+    <div style="width:100%; text-align:center; margin-top:150px;">
+        <h3>SkinAd Preview</h3>
+        <p>Your page content here…</p>
+    </div>
+
+</body>
+
+</html>

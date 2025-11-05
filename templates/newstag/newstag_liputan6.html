@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Liputan6 Newstag Preview</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff;
+}
+
+/* Container utama */
+.trending {
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 12px 0;
+  margin: 0 auto;
+  max-width: 960px;
+}
+
+.trending--inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trending--title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: #e64a19; /* warna oranye khas "Trending" */
+  text-transform: uppercase;
+  font-size: 15px;
+}
+
+.trending--title svg {
+  color: #e64a19;
+  width: 18px;
+  height: 18px;
+}
+
+/* Wrapper list */
+.trending--wrapper {
+  overflow-x: auto;
+}
+
+.trending--list {
+  list-style: none;
+  display: flex;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+.trending--list__item {
+  flex-shrink: 0;
+}
+
+.trending__item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #f8f8f8;
+  border-radius: 20px;
+  padding: 6px 12px;
+  text-decoration: none;
+  color: #000;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.trending__item svg path {
+  stroke: #e64a19;
+}
+
+.trending__item:hover {
+  background: #e64a19;
+  color: #fff;
+}
+
+.trending__item:hover svg path {
+  stroke: #fff;
+}
+
+/* Injected tag */
+.trending__item.active {
+  background: #f8f8f8;
+  color: #000;
+}
+
+.trending__item.active:hover {
+  background: #e64a19;
+  color: #fff;
+}
+</style>
+</head>
+<body>
+
+<div class="trending">
+  <div class="trending--inner">
+    <div class="trending--title">
+      <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.8327 5.83325H18.8327M18.8327 5.83325V10.8333M18.8327 5.83325L11.7493 12.9166L7.58268 8.74992L2.16602 14.1666" 
+              stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <span>Trending</span>
+    </div>
+    <div class="trending--wrapper">
+      <ul class="trending--list" id="tagContainer">
+        <li class="trending--list__item"><a href="#" class="trending__item"><span>Sample</span></a></li>
+        <li class="trending--list__item"><a href="#" class="trending__item"><span>Sample</span></a></li>
+        <li class="trending--list__item"><a href="#" class="trending__item"><span>Sample</span></a></li>
+        <li class="trending--list__item"><a href="#" class="trending__item"><span>Sample</span></a></li>
+        <li class="trending--list__item"><a href="#" class="trending__item"><span>Sample</span></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  const text = "{{ text }}";
+  const pos = parseInt("{{ position }}", 10) || 0;
+  const container = document.getElementById("tagContainer");
+
+  if (text && text.trim() !== "") {
+    const li = document.createElement("li");
+    li.className = "trending--list__item";
+    const newTag = document.createElement("a");
+    newTag.className = "trending__item active";
+    newTag.href = "#";
+    newTag.innerHTML = `<span>${text}</span>`;
+    li.appendChild(newTag);
+
+    const children = container.children;
+    if (pos >= children.length) container.appendChild(li);
+    else container.insertBefore(li, children[pos]);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>KapanLagi Newstag Preview</title>
+    <style>
+        body {
+            margin: 0;
+            background: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        /* === Trending Header === */
+        .header25-trending {
+            --spacing: 0.25rem;
+            --color-white: #FFF;
+            --color-secondary: #EC2A80;
+            --trending-shadow: white;
+            min-height: 76px;
+            padding: 12px 0;
+            background-color: transparent;
+        }
+
+        .header25-trending>.container25 {
+            padding-inline: calc(var(--spacing) * 4);
+            margin-inline: auto;
+            max-width: 996px;
+        }
+
+        .header25-trending__inner {
+            display: flex;
+            gap: calc(var(--spacing) * 3);
+            border-block: 1px solid #ddd;
+            padding-block: calc(var(--spacing) * 2.5);
+        }
+
+        .header25-trending__title {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 1);
+            color: var(--color-secondary);
+            font-size: 1.5rem;
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .header25-trending__title::before {
+            content: '';
+            display: inline-block;
+            width: 23px;
+            height: 23px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="19"><path fill="%23000000" d="M4.77566 0.320312H12.7785L9.2016 7.37352H13.1245L4.85414 18.6797L6.29062 10.1545H0.876953L4.77566 0.320312Z"/></svg>');
+            filter: invert(0.5) sepia(0.5) saturate(50) hue-rotate(315deg) brightness(0.95);
+        }
+
+        /* === Tag List === */
+        .header25-trending__list {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 3);
+            white-space: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        /* === Tag Style (Default) === */
+        .header25-trending__item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #000;
+            background-color: #fff9e8;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid #e8e2c8;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        /* Hover (shared) */
+        .header25-trending__item:hover {
+            background-color: var(--color-secondary);
+            color: #fff;
+        }
+
+        .header25-trending__item:hover::after {
+            filter: invert(1) contrast(1);
+        }
+
+        /* === Injected Tag (initially same look as normal) === */
+        .header25-trending__item.active {
+            background-color: #fff9e8;
+            color: #000;
+            border: 1px solid #e8e2c8;
+        }
+
+        /* ✅ Allow hover for .active tags too */
+        .header25-trending__item.active:hover {
+            background-color: var(--color-secondary);
+            color: #fff;
+        }
+
+        /* === Arrow Icon === */
+        .header25-trending__item::after {
+            content: '';
+            width: 15px;
+            height: 15px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="7"><path fill="%23000000" d="M8.33268 0L9.67435 1.34167L6.81602 4.2L4.48268 1.86667L0.166016 6.18333L0.982682 7L4.48268 3.5L6.81602 5.83333L10.491 2.15833L11.8327 3.5V0H8.33268Z"/></svg>');
+            filter: invert(0.5) sepia(0.5) saturate(50) hue-rotate(315deg) brightness(0.95);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="spotlightbelt2025" class="header25-trending">
+        <div class="container25">
+            <div class="header25-trending__inner">
+                <div class="header25-trending__title"><span>Trending</span></div>
+                <div class="header25-trending__wrapper mask-right">
+                    <div class="header25-trending__list" id="tagContainer">
+                        <a class="header25-trending__item" href="#"><span>Sample</span></a>
+                        <a class="header25-trending__item" href="#"><span>Sample</span></a>
+                        <a class="header25-trending__item" href="#"><span>Sample</span></a>
+                        <a class="header25-trending__item" href="#"><span>Sample</span></a>
+                        <a class="header25-trending__item" href="#"><span>Sample</span></a>
+                        <a class="header25-trending__item" href="#"><span>Sample</span></a>
+                        <a class="header25-trending__item" href="#"><span>Sample</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const text = "{{ text }}";
+        const pos = parseInt("{{ position }}", 10) || 0;
+        const container = document.getElementById("tagContainer");
+
+        if (text && text.trim() !== "") {
+            const newTag = document.createElement("a");
+            newTag.className = "header25-trending__item active";
+            newTag.href = "#";
+            newTag.innerHTML = `<span>${text}</span>`;
+
+            const children = container.children;
+            if (pos >= children.length) container.appendChild(newTag);
+            else container.insertBefore(newTag, children[pos]);
+        }
+    </script>
+
+</body>
+
+</html>

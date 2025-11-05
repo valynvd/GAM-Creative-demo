@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Newstag Preview</title>
+
+{% if site == "kapanlagi" %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    padding: 20px;
+  }
+
+  .tag-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .tag {
+    background: #EFEFEF;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #333;
+  }
+
+  .tag.active {
+    background: #FFD700;
+    color: #000;
+    font-weight: bold;
+  }
+</style>
+
+{% else %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background:#fafafa;
+  }
+
+  .tag-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .tag {
+    background: #f2f2f2;
+    padding: 6px 12px;
+    border-radius: 14px;
+    font-size: 14px;
+    border: 1px solid #dcdcdc;
+  }
+
+  .tag.active {
+    background: #fff4cc;
+    border-color: #e0b100;
+    font-weight: bold;
+  }
+</style>
+{% endif %}
+
+</head>
+<body>
+
+<div class="tag-container" id="tagContainer">
+  <div class="tag">Sample</div>
+  <div class="tag">Sample</div>
+  <div class="tag">Sample</div>
+  <div class="tag">Sample</div>
+  <div class="tag">Sample</div>
+</div>
+
+<script>
+  const text = "{{ text }}";
+  const pos = parseInt("{{ position }}", 10) || 0;
+  const container = document.getElementById("tagContainer");
+
+  const newTag = document.createElement("div");
+  newTag.className = "tag active";
+  newTag.textContent = text;
+
+  const children = container.children;
+
+  if (pos >= children.length) {
+    container.appendChild(newTag);
+  } else {
+    container.insertBefore(newTag, children[pos]);
+  }
+</script>
+
+</body>
+</html>

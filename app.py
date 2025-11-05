@@ -87,6 +87,8 @@ def preview_newstag():
     template = template_map.get(site, "newstag/preview_newstag.html")
     return render_template(template, text=text, site=site, position=position)
 
+def handler (event, context):
+    return app
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -3,9 +3,9 @@ import os
 
 app = Flask(__name__)
 
-# Folder static upload
-UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads")
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads")
+# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+UPLOAD_FOLDER = "static/uploads"
 
 @app.route("/", methods=["GET", "POST"])
 def dashboard():
@@ -43,15 +43,11 @@ def dashboard():
     if "left_img" in request.files:
         f = request.files["left_img"]
         if f and f.filename:
-            save_path = os.path.join(UPLOAD_FOLDER, f.filename)
-            f.save(save_path)
             left_img = f.filename
 
     if "right_img" in request.files:
         f = request.files["right_img"]
         if f and f.filename:
-            save_path = os.path.join(UPLOAD_FOLDER, f.filename)
-            f.save(save_path)
             right_img = f.filename
 
     return render_template(
@@ -87,8 +83,8 @@ def preview_newstag():
     template = template_map.get(site, "newstag/preview_newstag.html")
     return render_template(template, text=text, site=site, position=position)
 
-def handler (event, context):
-    return app
+
+handler = app
 
 if __name__ == "__main__":
     app.run(debug=True)

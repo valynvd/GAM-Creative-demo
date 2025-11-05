@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for
 import os
 
-app = Flask(__name__)
+app = Flask(__name__), template_folder = "templates", static_folder = "static"
 
 # UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads")
 # os.makedirs(UPLOAD_FOLDER, exist_ok=True)

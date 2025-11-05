@@ -84,7 +84,7 @@ def preview_newstag():
     return render_template(template, text=text, site=site, position=position)
 
 
-handler = app
+app = app
 
 if __name__ == "__main__":
     app.run(debug=True)

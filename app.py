@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for
 import os
 
-app = Flask(__name__), template_folder = "templates", static_folder = "static"
+app = Flask(__name__, template_folder = "templates", static_folder = "static")
 
 # UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads")
 # os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -82,9 +82,6 @@ def preview_newstag():
 
     template = template_map.get(site, "newstag/preview_newstag.html")
     return render_template(template, text=text, site=site, position=position)
-
-
-app = app
 
 if __name__ == "__main__":
     app.run(debug=True)

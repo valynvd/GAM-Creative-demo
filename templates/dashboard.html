@@ -20,6 +20,8 @@
       --shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
     }
 
+
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -40,25 +42,11 @@
       padding: 18px 32px;
       font-weight: 700;
       font-size: 20px;
+      color: var(--text-main);
       position: sticky;
       top: 0;
       z-index: 100;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 28px 0 10px 0;
-    }
-
-    .hero h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .hero .subtitle {
-      font-size: 15px;
-      color: var(--text-muted);
+      backdrop-filter: blur(8px);
     }
 
     main {
@@ -70,10 +58,12 @@
       gap: 32px;
     }
 
+    /* Grid layout */
     .layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
+      align-items: stretch;
     }
 
     .card {
@@ -95,25 +85,27 @@
 
     .card-body {
       padding: 20px 24px;
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 14px;
     }
 
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     label {
+      display: block;
+      margin-bottom: 6px;
       font-size: 14px;
       font-weight: 600;
-      margin-bottom: 5px;
-      display: block;
+      color: var(--text-main);
     }
 
     select,
-    input,
+    input[type="text"],
+    input[type="number"],
     textarea {
       width: 100%;
       border-radius: 10px;
@@ -133,7 +125,22 @@
     }
 
     input[type="file"] {
-      padding: 5px 0;
+      padding: 6px 0;
+      font-size: 14px;
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      border-color: var(--primary);
+      background: var(--bg);
     }
 
     button {
@@ -143,6 +150,7 @@
       border: none;
       border-radius: 10px;
       padding: 10px 18px;
+      font-size: 14px;
       cursor: pointer;
       transition: all 0.2s ease;
       box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25);
@@ -154,9 +162,12 @@
     }
 
     textarea {
+      resize: vertical;
       min-height: 200px;
       font-family: 'JetBrains Mono', monospace;
+      line-height: 1.5;
       background: #f9fafb;
+      margin-bottom: 14px;
     }
 
     .copy-row {
@@ -182,6 +193,47 @@
       transform: translateY(0);
     }
 
+    .preview-card {
+      margin-top: 10px;
+    }
+
+    .preview-section {
+      margin-top: 30px;
+    }
+
+    .preview-container {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .preview-container.skinad {
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      display: block;
+    }
+
+    iframe.skin-preview {
+      height: 100vh;
+    }
+
+    .placeholder {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 70px 30px;
+      text-align: center;
+      color: var(--text-muted);
+      background: var(--bg);
+    }
+
     @media (max-width: 1200px) {
       .layout {
         grid-template-columns: 1fr;
@@ -191,24 +243,14 @@
 </head>
 
 <body>
-
-  <header>GAM Creative Studio</header>
-
-  <section class="hero">
-    <h1>🎨 Generate Google Ad Manager Creative Snippets</h1>
-    <p class="subtitle">Upload assets & instantly generate production-ready ad scripts.</p>
-  </section>
+  <header>GAM Creative</header>
 
   <main>
     <form method="POST" enctype="multipart/form-data">
-
       <div class="layout">
-
-        <!-- LEFT CARD -->
         <div class="card">
-          <div class="card-header">🎛 Creative Settings</div>
+          <div class="card-header">Format</div>
           <div class="card-body">
-
             <div>
               <div class="form-group">
                 <label>Ad Format</label>
@@ -235,7 +277,7 @@
 
               <div class="form-group">
                 <label>Position</label>
-                <input type="number" name="position" min="0" value="{{ position }}">
+                <input type="number" name="position" min="0" value="{{ position }}" placeholder="0">
               </div>
               {% endif %}
 
@@ -250,25 +292,23 @@
                 <input type="file" name="right_img" accept="image/*">
               </div>
 
-              <input type="hidden" name="left_saved" value="{{ left_img }}">
-              <input type="hidden" name="right_saved" value="{{ right_img }}">
+              <input type="hidden" name="left_saved" value="{{ left_img if left_img }}">
+              <input type="hidden" name="right_saved" value="{{ right_img if right_img }}">
               {% endif %}
             </div>
 
             <div>
               {% if format == 'skinad' %}
               <button type="submit">Upload & Preview</button>
-              {% else %}
+              {% elif format == 'newstag' %}
               <button type="submit">Update Preview</button>
               {% endif %}
             </div>
-
           </div>
         </div>
 
-        <!-- RIGHT CARD -->
         <div class="card">
-          <div class="card-header">📦 Generated Code</div>
+          <div class="card-header">Generated Code</div>
           <div class="card-body">
             <textarea id="snippetBox" readonly>{{ snippet }}</textarea>
             <div class="copy-row">
@@ -277,8 +317,8 @@
             </div>
           </div>
         </div>
-
       </div>
+
     </form>
   </main>
 
@@ -286,6 +326,7 @@
     function copySnippet() {
       const textarea = document.getElementById("snippetBox");
       const toast = document.getElementById("copyToastInline");
+      if (!textarea) return;
 
       navigator.clipboard.writeText(textarea.value).then(() => {
         toast.classList.add("show");
@@ -293,7 +334,6 @@
       });
     }
   </script>
-
 </body>
 
 </html>

@@ -10,6 +10,7 @@
       --primary: #5B5BD6;
       --primary-hover: #4949B8;
       --primary-light: #F3F3FF;
+      --accent: #706FD3;
       --bg: #F9FAFB;
       --surface: #FFFFFF;
       --border: #E5E7EB;
@@ -18,6 +19,8 @@
       --radius: 16px;
       --shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
     }
+
+
 
     * {
       box-sizing: border-box;
@@ -39,6 +42,7 @@
       padding: 18px 32px;
       font-weight: 700;
       font-size: 20px;
+      color: var(--text-main);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -54,10 +58,12 @@
       gap: 32px;
     }
 
+    /* Grid layout */
     .layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
+      align-items: stretch;
     }
 
     .card {
@@ -79,10 +85,10 @@
 
     .card-body {
       padding: 20px 24px;
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 20px;
     }
 
     .form-group {
@@ -94,6 +100,7 @@
       margin-bottom: 6px;
       font-size: 14px;
       font-weight: 600;
+      color: var(--text-main);
     }
 
     select,
@@ -105,7 +112,7 @@
       border: 1.5px solid var(--border);
       padding: 10px 14px;
       font-size: 14px;
-      transition: 0.2s;
+      transition: all 0.2s ease;
       background: white;
     }
 
@@ -128,7 +135,7 @@
       border: 1.5px solid var(--border);
       background: white;
       cursor: pointer;
-      transition: 0.2s;
+      transition: all 0.2s ease;
     }
 
     input[type="file"]::file-selector-button:hover {
@@ -145,7 +152,7 @@
       padding: 10px 18px;
       font-size: 14px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: all 0.2s ease;
       box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25);
     }
 
@@ -157,8 +164,10 @@
     textarea {
       resize: vertical;
       min-height: 200px;
-      background: #f9fafb;
       font-family: 'JetBrains Mono', monospace;
+      line-height: 1.5;
+      background: #f9fafb;
+      margin-bottom: 14px;
     }
 
     .copy-row {
@@ -171,15 +180,58 @@
       opacity: 0;
       font-size: 13px;
       font-weight: 600;
-      background: var(--text-main);
       color: white;
-      padding: 6px 10px;
+      background: var(--text-main);
       border-radius: 6px;
-      transition: 0.25s;
+      padding: 6px 10px;
+      transform: translateY(4px);
+      transition: all 0.25s ease;
     }
 
     .copy-toast-inline.show {
       opacity: 1;
+      transform: translateY(0);
+    }
+
+    .preview-card {
+      margin-top: 10px;
+    }
+
+    .preview-section {
+      margin-top: 30px;
+    }
+
+    .preview-container {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .preview-container.skinad {
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      display: block;
+    }
+
+    iframe.skin-preview {
+      height: 100vh;
+    }
+
+    .placeholder {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 70px 30px;
+      text-align: center;
+      color: var(--text-muted);
+      background: var(--bg);
     }
 
     @media (max-width: 1200px) {
@@ -196,11 +248,9 @@
   <main>
     <form method="POST" enctype="multipart/form-data">
       <div class="layout">
-
         <div class="card">
           <div class="card-header">Format</div>
           <div class="card-body">
-
             <div>
               <div class="form-group">
                 <label>Ad Format</label>
@@ -216,3 +266,74 @@
                 <select name="site">
                   <option value="default" {% if site=='default' %}selected{% endif %}>Default</option>
                   <option value="kapanlagi" {% if site=='kapanlagi' %}selected{% endif %}>KapanLagi</option>
+                  <option value="liputan6" {% if site=='liputan6' %}selected{% endif %}>Liputan6</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Tag Text</label>
+                <input type="text" name="text" value="{{ text }}" placeholder="Trending">
+              </div>
+
+              <div class="form-group">
+                <label>Position</label>
+                <input type="number" name="position" min="0" value="{{ position }}" placeholder="0">
+              </div>
+              {% endif %}
+
+              {% if format == 'skinad' %}
+              <div class="form-group">
+                <label>Left Image</label>
+                <input type="file" name="left_img" accept="image/*">
+              </div>
+
+              <div class="form-group">
+                <label>Right Image</label>
+                <input type="file" name="right_img" accept="image/*">
+              </div>
+
+              <input type="hidden" name="left_saved" value="{{ left_img if left_img }}">
+              <input type="hidden" name="right_saved" value="{{ right_img if right_img }}">
+              {% endif %}
+            </div>
+
+            <div>
+              {% if format == 'skinad' %}
+              <button type="submit">Upload & Preview</button>
+              {% elif format == 'newstag' %}
+              <button type="submit">Update Preview</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">Generated Code</div>
+          <div class="card-body">
+            <textarea id="snippetBox" readonly>{{ snippet }}</textarea>
+            <div class="copy-row">
+              <button type="button" onclick="copySnippet()">Copy Code</button>
+              <span id="copyToastInline" class="copy-toast-inline">✅ Copied!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </main>
+
+  <script>
+    function copySnippet() {
+      const textarea = document.getElementById("snippetBox");
+      const toast = document.getElementById("copyToastInline");
+      if (!textarea) return;
+
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 1500);
+      });
+    }
+  </script>
+</body>
+
+</html>

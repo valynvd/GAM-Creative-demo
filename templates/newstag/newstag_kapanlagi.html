@@ -155,22 +155,28 @@
             else container.insertBefore(newTag, children[pos]);
         }
     </script>
+    
 {% if snippet %}
 <script>
 (function() {
+  const html = {{ snippet|tojson|safe }};
   const parser = new DOMParser();
-  const doc = parser.parseFromString(`{{ snippet | safe }}`, 'text/html');
-  const scripts = doc.querySelectorAll('script');
+  const doc = parser.parseFromString(html, "text/html");
+  const scripts = doc.querySelectorAll("script");
 
   scripts.forEach(s => {
-    const newScript = document.createElement('script');
-    if (s.src) newScript.src = s.src;
-    else newScript.textContent = s.textContent;
+    const newScript = document.createElement("script");
+    if (s.src) {
+      newScript.src = s.src;
+    } else {
+      newScript.textContent = s.textContent;
+    }
     document.body.appendChild(newScript);
   });
 })();
 </script>
 {% endif %}
+
 
 </body>
 </html>

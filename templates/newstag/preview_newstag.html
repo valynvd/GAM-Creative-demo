@@ -94,7 +94,11 @@
   }
 </script>
 {% if snippet %}
-{{ snippet|safe }}
+<script>
+  const snippetWrapper = document.createElement("div");
+  snippetWrapper.innerHTML = `{{ snippet | safe }}`;
+  document.body.appendChild(snippetWrapper);
+</script>
 {% endif %}
 </body>
 </html>

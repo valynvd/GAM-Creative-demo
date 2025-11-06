@@ -156,7 +156,21 @@
         }
     </script>
 {% if snippet %}
-{{ snippet|safe }}
+<script>
+(function() {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(`{{ snippet | safe }}`, 'text/html');
+  const scripts = doc.querySelectorAll('script');
+
+  scripts.forEach(s => {
+    const newScript = document.createElement('script');
+    if (s.src) newScript.src = s.src;
+    else newScript.textContent = s.textContent;
+    document.body.appendChild(newScript);
+  });
+})();
+</script>
 {% endif %}
+
 </body>
 </html>

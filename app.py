@@ -93,6 +93,7 @@ def preview_newstag():
     template = template_map.get(site, "newstag/preview_newstag.html")
     
     return render_template(template, text=text, site=site, position=position)
+
 @app.route('preview/newstag/live')
 def preview_newstag_live():
     text = request.args.get("text", "")
@@ -106,7 +107,9 @@ def preview_newstag_live():
     url = site_map.get(site, "https://www.kapanlagi.com")
 
     try:
-        html = requests.get(url, timeout=5).text
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+        html = requests.get(url, headers=headers, timeout=5).text
+
     except:
         return "<p style='padding:20px'>⚠️ Failed to fetch site preview.</p>"
     

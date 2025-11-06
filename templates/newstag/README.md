@@ -1,4 +1,4 @@
-````markdown
+
 # GAM Creative Demo
 
 A lightweight web application that demonstrates how to preview and test ad creatives integrated with Google Ad Manager (GAM).  
@@ -32,7 +32,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/valynvd/GAM-Creative-demo.git
 cd GAM-Creative-demo
-````
+```
 
 Create and activate a virtual environment:
 

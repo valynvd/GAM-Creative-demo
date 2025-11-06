@@ -94,7 +94,7 @@ def preview_newstag():
     
     return render_template(template, text=text, site=site, position=position)
 
-@app.route('/preview/newstag/live')
+@app.route("/preview/newstag/live")
 def preview_newstag_live():
     text = request.args.get("text", "")
     site = request.args.get("site", "kapanlagi")
@@ -104,30 +104,29 @@ def preview_newstag_live():
         "kapanlagi": "https://www.kapanlagi.com",
     }
 
-    url = site_map.get(site, "https://www.kapanlagi.com")
+    url = site_map.get(site, "https://www.kapanlagi.com") + "?m=1"
 
-    try:
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
-        html = requests.get(url, headers=headers, timeout=5).text
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
+    }
 
-    except:
-        return "<p style='padding:20px'>⚠️ Failed to fetch site preview.</p>"
-    
+    html = requests.get(url, headers=headers, timeout=6).text
     soup = BeautifulSoup(html, "html.parser")
 
-    trending = soup.find('div', class_='header25-trending')
-    if trending is None:
-        return "<p style='padding:20px'>⚠️ Trending section not found on site.</p>"
+    trending = soup.select_one(".header25-trending")
+    if not trending:
+        return "<p style='padding:20px'>⚠️ Trending section not found.</p>"
 
-    tag_container = trending.find(id="tagContainer")
+    tag_container = trending.select_one("#tagContainer")
     if tag_container:
         new_tag = soup.new_tag("a", **{"class": "header25-trending__item active", "href": "#"})
         new_tag.string = text or "Tag"
-        children = tag_container.find_all("a")
-        if position >= len(children):
+
+        existing = tag_container.find_all("a")
+        if position >= len(existing):
             tag_container.append(new_tag)
         else:
-            children[position].insert_before(new_tag)
+            existing[position].insert_before(new_tag)
 
     snippet = f"""
 <script src="https://cdn.jsdelivr.net/gh/valynvd/yes@main/ad_Inventory.js?creative=newstag"></script>
@@ -140,11 +139,10 @@ def preview_newstag_live():
   }});
 </script>
 """
-
     trending.append(BeautifulSoup(snippet, "html.parser"))
+    return str(trending)  
 
-    return str(trending)
-    
+
 
 if __name__ == "__main__":
     app.run(debug=True)

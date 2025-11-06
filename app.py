@@ -94,7 +94,7 @@ def preview_newstag():
     
     return render_template(template, text=text, site=site, position=position)
 
-@app.route('preview/newstag/live')
+@app.route('/preview/newstag/live')
 def preview_newstag_live():
     text = request.args.get("text", "")
     site = request.args.get("site", "kapanlagi")

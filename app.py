@@ -81,15 +81,32 @@ def preview_newstag():
     site = request.args.get("site", "generic")
     position = request.args.get("position", 0)
 
-    snippet = f"""
+    pure_snippet = request.args.get("snippet", "")
+    if not pure_snippet:
+        pure_snippet = """
 <script src="https://cdn.jsdelivr.net/gh/valynvd/yes@main/ad_Inventory.js"></script>
 <script>
-  adInventory.init('newstag', {{
-    textTag: '{text}',
+  adInventory.init('newstag', {
+    textTag: '%s',
     landingPage: '%%VIEW_URL_ESC%%',
-    position: '{position}',
-    site: '{site}'
-  }});
+    position: '%s',
+    site: '%s'
+  });
+</script>""" % (text, position, site)
+
+    snippet = f"""
+<script>
+window.kly = window.kly || {{}};
+window.parent.kly = window.parent.kly || {{}};
+</script>
+{pure_snippet}
+<script>
+(parent.adInventory || window.adInventory)?.init('newstag', {{
+  textTag: '{text}',
+  landingPage: '%%VIEW_URL_ESC%%',
+  position: '{position}',
+  site: '{site}'
+}});
 </script>
 """
 

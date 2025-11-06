@@ -311,6 +311,7 @@
           <div class="card-header">Generated Code</div>
           <div class="card-body">
             <textarea id="snippetBox" readonly>{{ snippet }}</textarea>
+            <input type="hidden" name="pure_snippet" value="{{ snippet | e }}">
             <div class="copy-row">
               <button type="button" onclick="copySnippet()">Copy Code</button>
               <span id="copyToastInline" class="copy-toast-inline">✅ Copied!</span>
@@ -325,7 +326,7 @@
         <div class="card-body" style="padding:0;">
           {% if format == 'newstag' %}
           <div class="preview-container">
-            <iframe src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}"></iframe>
+            <iframe src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet | urlencode }}"></iframe>
           {% elif format == 'skinad' %}
           <div class = "preview-container skinad">
             <iframe class="skin-preview" src="/preview/skinad?left={{ left_img }}&right={{ right_img }}"></iframe>

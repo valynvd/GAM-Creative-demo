@@ -95,10 +95,24 @@
 </script>
 {% if snippet %}
 <script>
-  const snippetWrapper = document.createElement("div");
-  snippetWrapper.innerHTML = `{{ snippet | safe }}`;
-  document.body.appendChild(snippetWrapper);
+(function() {
+  const htmlString = `{{ snippet | safe }}`;
+  const parser = new DOMParser();
+  const parsed = parser.parseFromString(htmlString, "text/html");
+  const scripts = parsed.querySelectorAll("script");
+
+  scripts.forEach(s => {
+    const newScript = document.createElement("script");
+    if (s.src) {
+      newScript.src = s.src; // <-- ini bagian penting supaya UMD ke-load
+    } else {
+      newScript.textContent = s.textContent;
+    }
+    document.body.appendChild(newScript);
+  });
+})();
 </script>
 {% endif %}
+
 </body>
 </html>

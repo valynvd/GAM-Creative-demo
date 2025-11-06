@@ -119,6 +119,11 @@
 </head>
 
 <body>
+    <script>
+        window.kly = window.kly || {};
+        window.parent = window.parent || window;
+        window.parent.kly = window.parent.kly || {};
+    </script>
 
     <div id="spotlightbelt2025" class="header25-trending">
         <div class="container25">
@@ -155,28 +160,34 @@
             else container.insertBefore(newTag, children[pos]);
         }
     </script>
-    
-{% if snippet %}
+
+    {% if snippet %}
 <script>
 (function() {
-  const html = {{ snippet|tojson|safe }};
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
-  const scripts = doc.querySelectorAll("script");
+    window.kly = window.kly || {};
+    window.parent = window.parent || window;
+    window.parent.kly = window.parent.kly || {};
 
-  scripts.forEach(s => {
-    const newScript = document.createElement("script");
-    if (s.src) {
-      newScript.src = s.src;
-    } else {
-      newScript.textContent = s.textContent;
-    }
-    document.body.appendChild(newScript);
-  });
+    const html = {{ snippet | tojson | safe }};
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const scripts = doc.querySelectorAll("script");
+
+    scripts.forEach(s => {
+        const newScript = document.createElement("script");
+        if (s.src) {
+            newScript.src = s.src;
+        } else {
+            newScript.textContent = s.textContent;
+        }
+        document.body.appendChild(newScript);
+    });
 })();
 </script>
 {% endif %}
 
 
+
 </body>
+
 </html>

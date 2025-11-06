@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect
 import os, base64
 from urllib.parse import quote, unquote
+import requests
+from bs4 import BeautifulSoup
 
 app = Flask(__name__, template_folder = "templates", static_folder = "static")
 
@@ -89,7 +91,57 @@ def preview_newstag():
     }
 
     template = template_map.get(site, "newstag/preview_newstag.html")
+    
     return render_template(template, text=text, site=site, position=position)
+@app.route('preview/newstag/live')
+def preview_newstag_live():
+    text = request.args.get("text", "")
+    site = request.args.get("site", "kapanlagi")
+    position = int(request.args.get("position", 0))
+
+    site_map = {
+        "kapanlagi": "https://www.kapanlagi.com",
+    }
+
+    url = site_map.get(site, "https://www.kapanlagi.com")
+
+    try:
+        html = requests.get(url, timeout=5).text
+    except:
+        return "<p style='padding:20px'>⚠️ Failed to fetch site preview.</p>"
+    
+    soup = BeautifulSoup(html, "html.parser")
+
+    trending = soup.find('div', class_='header25-trending')
+    if trending is None:
+        return "<p style='padding:20px'>⚠️ Trending section not found on site.</p>"
+
+    tag_container = trending.find(id="tagContainer")
+    if tag_container:
+        new_tag = soup.new_tag("a", **{"class": "header25-trending__item active", "href": "#"})
+        new_tag.string = text or "Tag"
+        children = tag_container.find_all("a")
+        if position >= len(children):
+            tag_container.append(new_tag)
+        else:
+            children[position].insert_before(new_tag)
+
+    snippet = f"""
+<script src="https://cdn.jsdelivr.net/gh/valynvd/yes@main/ad_Inventory.js?creative=newstag"></script>
+<script>
+  adInventory.init('newstag', {{
+    textTag: '{text}',
+    landingPage: '%%VIEW_URL_ESC%%',
+    position: '{position}',
+    site: '{site}'
+  }});
+</script>
+"""
+
+    trending.append(BeautifulSoup(snippet, "html.parser"))
+
+    return str(trending)
+    
 
 if __name__ == "__main__":
     app.run(debug=True)

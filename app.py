@@ -24,7 +24,7 @@ def dashboard():
 </script>"""
 
     snippet_newstag = """
-<script src="https://cdn.jsdelivr.net/gh/valynvd/yes@main/ad_Inventory.js?creative=newstag"></script>
+<script src="https://cdn.jsdelivr.net/gh/valynvd/yes@main/ad_Inventory.js"></script>
 <script>
   adInventory.init('newstag', {
     textTag: '',
@@ -82,7 +82,7 @@ def preview_newstag():
     position = request.args.get("position", 0)
 
     snippet = f"""
-<script src="https://cdn.jsdelivr.net/gh/valynvd/yes@main/ad_Inventory.js?creative=newstag"></script>
+<script src="https://cdn.jsdelivr.net/gh/valynvd/yes@main/ad_Inventory.js"></script>
 <script>
   adInventory.init('newstag', {{
     textTag: '{text}',

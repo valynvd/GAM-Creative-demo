@@ -93,6 +93,8 @@
     container.insertBefore(newTag, children[pos]);
   }
 </script>
-
+{% if snippet %}
+{{ snippet|safe }}
+{% endif %}
 </body>
 </html>

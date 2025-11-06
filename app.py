@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 import os, base64
+from urllib.parse import quote, unquote
 
 app = Flask(__name__, template_folder = "templates", static_folder = "static")
 
@@ -56,8 +57,8 @@ def dashboard():
         snippet=snippet,
         text=text,
         position=position,
-        left_img=left_img,
-        right_img=right_img,
+        left_img=quote(left_img) if left_img else "",
+        right_img=quote(right_img) if right_img else "",
         site=site
     )
 
@@ -66,7 +67,14 @@ def dashboard():
 def preview_skinad():
     left = request.args.get("left", "")
     right = request.args.get("right", "")
+    
+    if left:
+        left = unquote(left)
+    if right:
+        right = unquote(right)
+
     return render_template("preview_skinad.html", left=left, right=right)
+
 
 
 @app.route("/preview/newstag")

@@ -49,10 +49,6 @@ def dashboard():
         f = request.files["right_img"]
         if f and f.filename:
             right_img = "data:image/png;base64," + base64.b64encode(f.read()).decode('utf-8')
-    
-    if request.method == "POST" and format == "skinad":
-        return redirect(url_for("preview_skinad", left=left_img, right=right_img))
-
 
     return render_template(
         "dashboard.html",

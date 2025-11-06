@@ -327,6 +327,10 @@
           <div class="preview-container">
             <iframe src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}"></iframe>
           </div>
+          {% elif format == 'skinad' %}
+          <div class = "preview-container skinad">
+            <iframe class="skin-preview" src="/preview/skinad?left={{ left_img }}&right={{ right_img }}"></iframe>
+          </div>
           {% endif %}
         </div>
       </div>

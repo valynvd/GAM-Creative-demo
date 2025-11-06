@@ -25,33 +25,10 @@
         .skin.right {
             right: 0;
         }
-
-        .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #5B5BD6;
-            color: white;
-            padding: 8px 18px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-family: sans-serif;
-            z-index: 10000;
-            opacity: 0.8;
-        }
-
-        .back-btn:hover {
-            opacity: 1;
-            background: #4949B8;
-        }
     </style>
 </head>
 
 <body>
-
-    <a href="/" class="back-btn">Back</a>
-
     {% if left %}
     <a class="skin left" href="#">
         <img src="{{ left }}" onerror="this.style.display='none'">

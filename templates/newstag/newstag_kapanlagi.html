@@ -161,30 +161,40 @@
         }
     </script>
 
-    {% if snippet %}
+{% if snippet %}
 <script>
-(function() {
-    window.kly = window.kly || {};
-    window.parent = window.parent || window;
-    window.parent.kly = window.parent.kly || {};
+(async function() {
+  window.kly = window.kly || {};
+  window.kly.site = "kapanlagi";
+  window.parent = window.parent || window;
+  window.parent.kly = window.parent.kly || window.kly;
 
-    const html = {{ snippet | tojson | safe }};
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-    const scripts = doc.querySelectorAll("script");
+  const html = {{ snippet | tojson | safe }};
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  const scripts = Array.from(doc.querySelectorAll("script"));
 
-    scripts.forEach(s => {
-        const newScript = document.createElement("script");
-        if (s.src) {
-            newScript.src = s.src;
-        } else {
-            newScript.textContent = s.textContent;
-        }
-        document.body.appendChild(newScript);
-    });
+  for (const s of scripts) {
+    if (s.src) {
+      await new Promise((resolve, reject) => {
+        const ext = document.createElement("script");
+        ext.src = s.src;
+        ext.onload = resolve;
+        ext.onerror = () => reject(new Error("Failed to load: " + s.src));
+        document.head.appendChild(ext);
+      });
+    } else {
+      const inline = document.createElement("script");
+      inline.textContent = s.textContent;
+      document.body.appendChild(inline);
+    }
+  }
+
+  console.log("Loader done. typeof adInventory:", typeof window.adInventory);
 })();
 </script>
 {% endif %}
+
 
 
 

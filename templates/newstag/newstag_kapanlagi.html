@@ -49,32 +49,49 @@
 
 {% if snippet %}
 <script>
-(async function() {
+(async function () {
   window.kly = window.kly || {};
-  window.kly.site = "kapanlagi";
+  window.kly.site = "{{ site }}";
+  window.kly.platform = "desktop";
 
   const html = {{ snippet | tojson | safe }};
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
-  const scripts = [...doc.querySelectorAll("script")];
+
+  const scripts = doc.querySelectorAll("script");
 
   for (const s of scripts) {
-    await new Promise((resolve) => {
-      const el = document.createElement("script");
+    await new Promise((resolve, reject) => {
+      const tag = document.createElement("script");
+
       if (s.src) {
-        el.src = s.src;
-        el.onload = resolve;
+        tag.src = s.src;
+        tag.onload = resolve;
+        tag.onerror = reject;
+        document.body.appendChild(tag);
       } else {
-        el.textContent = s.textContent;
+        tag.textContent = s.textContent;
+        document.body.appendChild(tag);
         resolve();
       }
-      document.body.appendChild(el);
     });
   }
 
+  if (window.adInventory && window.adInventory.init) {
+    console.log("🎉 Calling init()");
+    window.adInventory.init("newstag", {
+      textTag: "{{ text }}",
+      landingPage: "%%VIEW_URL_ESC%%",
+      position: parseInt("{{ position }}", 10),
+      site: "{{ site }}"
+    });
+  } else {
+    console.warn("❌ adInventory still undefined");
+  }
 })();
 </script>
 {% endif %}
+
 
 
 </body>

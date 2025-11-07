@@ -16,11 +16,9 @@
 <body>
 
 <script>
-  // 🔥 Spoof environment biar UMD berjalan
   window.kly = window.kly || {};
   window.kly.site = "kapanlagi";
 
-  // Mirror ke parent (iframe safe)
   try {
     window.parent.kly = window.kly;
   } catch(e) {}

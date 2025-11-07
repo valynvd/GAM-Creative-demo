@@ -1,99 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>KapanLagi Newstag Preview</title>
 
-<style>
-  body { margin:0; background:#fff; font-family:Arial, sans-serif; }
-  .header25-trending { padding:12px 0; border-bottom:1px solid #ddd; }
-  .header25-trending__list { display:flex; gap:8px; overflow-x:auto; }
-  .header25-trending__item { background:#fff9e8; padding:6px 12px; border-radius:999px; border:1px solid #e8e2c8; }
-  .header25-trending__item.active { border-color:#EC2A80; color:#EC2A80; font-weight:bold; }
-</style>
+<head>
+    <meta charset="UTF-8">
+    <title>KapanLagi Newstag Preview</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .header25-trending {
+            padding: 12px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header25-trending__list {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .header25-trending__item {
+            background: #fff9e8;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid #e8e2c8;
+        }
+
+        .header25-trending__item.active {
+            border-color: #EC2A80;
+            color: #EC2A80;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
 
-<script>
-  window.parent = window;
-  window.parent.kly = {
-    site: "kapanlagi",
-    platform: "desktop"
-  };
-</script>
+    <script>
+        window.parent = window;
+        window.parent.kly = {
+            site: "kapanlagi",
+            platform: "desktop"
+        };
+    </script>
 
-<div class="header25-trending">
-  <div class="header25-trending__list" id="tagContainer">
-    <a class="header25-trending__item"><span>Sample</span></a>
-    <a class="header25-trending__item"><span>Sample</span></a>
-    <a class="header25-trending__item"><span>Sample</span></a>
-    <a class="header25-trending__item"><span>Sample</span></a>
-  </div>
-</div>
+    <div class="header25-trending">
+        <div class="header25-trending__list" id="tagContainer">
+            <a class="header25-trending__item"><span>Sample</span></a>
+            <a class="header25-trending__item"><span>Sample</span></a>
+            <a class="header25-trending__item"><span>Sample</span></a>
+            <a class="header25-trending__item"><span>Sample</span></a>
+        </div>
+    </div>
 
-<script>
-  const text = "{{ text }}";
-  const pos = parseInt("{{ position }}", 10) || 0;
-  const container = document.getElementById("tagContainer");
+    <script>
+        const text = "{{ text }}";
+        const pos = parseInt("{{ position }}", 10) || 0;
+        const container = document.getElementById("tagContainer");
 
-  const newTag = document.createElement("a");
-  newTag.className = "header25-trending__item active";
-  newTag.innerHTML = `<span>${text}</span>`;
+        const newTag = document.createElement("a");
+        newTag.className = "header25-trending__item active";
+        newTag.innerHTML = `<span>${text}</span>`;
 
-  const children = container.children;
-  if (pos >= children.length) container.appendChild(newTag);
-  else container.insertBefore(newTag, children[pos]);
-</script>
+        const children = container.children;
+        if (pos >= children.length) container.appendChild(newTag);
+        else container.insertBefore(newTag, children[pos]);
+    </script>
 
-{% if snippet %}
-<script>
-(async function () {
-  window.parent = window;
-  window.parent.kly = {
-    site: "{{ site }}",
-    platform: "desktop"
-  };
+    {% if snippet %}
+    <script>
+        (async function () {
+            window.parent = window;
+            window.parent.kly = {
+                site: "{{ site }}",
+                platform: "desktop"
+            };
 
-  const html = {{ snippet | tojson | safe }};
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
+            const html = {{ snippet | tojson | safe
+        }};
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
 
-  const scripts = doc.querySelectorAll("script");
+        const scripts = doc.querySelectorAll("script");
 
-  for (const s of scripts) {
-    await new Promise((resolve, reject) => {
-      const tag = document.createElement("script");
+        for (const s of scripts) {
+            await new Promise((resolve, reject) => {
+                const tag = document.createElement("script");
 
-      if (s.src) {
-        tag.src = s.src;
-        tag.onload = resolve;
-        tag.onerror = reject;
-        document.body.appendChild(tag);
-      } else {
-        tag.textContent = s.textContent;
-        document.body.appendChild(tag);
-        resolve();
-      }
-    });
-  }
+                if (s.src) {
+                    tag.src = s.src;
+                    tag.onload = resolve;
+                    tag.onerror = reject;
+                    document.body.appendChild(tag);
+                } else {
+                    tag.textContent = s.textContent;
+                    document.body.appendChild(tag);
+                    resolve();
+                }
+            });
+        }
+        if (window.adInventory) {
+            window.parent.adInventory = window.adInventory;
+            console.log("✅ Exported adInventory to parent");
+        } else {
+            console.warn("⚠ adInventory missing after load");
+        }
 
-  if (window.adInventory && window.adInventory.init) {
-    console.log("🎉 Calling init()");
-    window.adInventory.init("newstag", {
-      textTag: "{{ text }}",
-      landingPage: "%%VIEW_URL_ESC%%",
-      position: parseInt("{{ position }}", 10),
-      site: "{{ site }}"
-    });
-  } else {
-    console.warn("❌ adInventory still undefined");
-  }
-})();
-</script>
-{% endif %}
+        if (window.adInventory && window.adInventory.init) {
+            window.adInventory.init("newstag", {
+                textTag: "{{ text }}",
+                landingPage: "%%VIEW_URL_ESC%%",
+                position: parseInt("{{ position }}", 10),
+                site: "{{ site }}"
+            });
+        } else {
+            console.warn("❌ adInventory still undefined");
+        }
+}) ();
+    </script>
+    {% endif %}
 
 
 
 </body>
+
 </html>

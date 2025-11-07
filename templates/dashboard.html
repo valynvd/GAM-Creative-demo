@@ -244,6 +244,7 @@
 
 <body>
   <header>GAM Creative</header>
+  <iframe src="/preview/newstag?..."></iframe>
 
   <main>
     <form method="POST" enctype="multipart/form-data">
@@ -326,14 +327,20 @@
         <div class="card-body" style="padding:0;">
           {% if format == 'newstag' %}
           <div class="preview-container">
-            <iframe src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet | urlencode }}">
-          {% elif format == 'skinad' %}
-          <div class = "preview-container skinad">
-            <iframe class="skin-preview" src="/preview/skinad?left={{ left_img }}&right={{ right_img }}"></iframe>
+            <script>
+              window.kly = window.kly || {};
+              window.kly.site = "{{ site }}";
+              window.kly.platform = "desktop";
+            </script>
+            <iframe
+              src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet | urlencode }}">
+              {% elif format == 'skinad' %}
+              <div class="preview-container skinad">
+                <iframe class="skin-preview" src="/preview/skinad?left={{ left_img }}&right={{ right_img }}"></iframe>
+              </div>
+              {% endif %}
           </div>
-          {% endif %}
         </div>
-      </div>
     </form>
   </main>
 

@@ -55,6 +55,21 @@
         </div>
     </div>
 
+    <script>
+        const text = "{{ text }}";
+        const pos = parseInt("{{ position }}", 10) || 0;
+        const container = document.getElementById("tagContainer");
+
+        const newTag = document.createElement("a");
+        newTag.className = "header25-trending__item active";
+        newTag.innerHTML = `<span>${text}</span>`;
+
+        const children = container.children;
+        if (pos >= children.length) container.appendChild(newTag);
+        else container.insertBefore(newTag, children[pos]);
+    </script>
+
+
     {% if snippet %}
     <script>
         (async function () {

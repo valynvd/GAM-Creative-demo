@@ -4,8 +4,6 @@ from urllib.parse import quote, unquote
 
 app = Flask(__name__, template_folder = "templates", static_folder = "static")
 
-UPLOAD_FOLDER = "static/uploads"
-
 @app.route("/", methods=["GET", "POST"])
 def dashboard():
     format = request.form.get("format", "skinad")

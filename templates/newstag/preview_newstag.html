@@ -35,22 +35,5 @@
   else container.insertBefore(newTag, children[pos]);
 </script>
 
-{% if snippet %}
-<script>
-(function() {
-  const htmlString = `{{ snippet | safe }}`;
-  const parser = new DOMParser();
-  const parsed = parser.parseFromString(htmlString, "text/html");
-
-  parsed.querySelectorAll("script").forEach(s => {
-    const sc = document.createElement("script");
-    if (s.src) sc.src = s.src;
-    else sc.textContent = s.textContent;
-    document.body.appendChild(sc);
-  });
-})();
-</script>
-{% endif %}
-
 </body>
 </html>

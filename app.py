@@ -4,14 +4,12 @@ from urllib.parse import quote, unquote
 
 app = Flask(__name__, template_folder = "templates", static_folder = "static")
 
-# UPLOAD_FOLDER = os.path.join(app.root_path, "static", "uploads")
-# os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 UPLOAD_FOLDER = "static/uploads"
 
 @app.route("/", methods=["GET", "POST"])
 def dashboard():
     format = request.form.get("format", "skinad")
-    site = request.form.get("site", "default")
+    site = request.form.get("site", "kapanlagi")
 
     snippet_skinad = """
 <script src="https://cdn.jsdelivr.net/gh/valynvd/yes@main/ad_Inventory.js"></script>
@@ -115,7 +113,7 @@ window.parent.kly = window.parent.kly || {{}};
         "liputan6": "newstag/newstag_liputan6.html",
     }
 
-    template = template_map.get(site, "newstag/preview_newstag.html")
+    template = template_map.get(site, "newstag/newstag_kapanlagi.html")
     return render_template(template, text=text, site=site, position=position, snippet=snippet)
 
 

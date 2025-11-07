@@ -16,12 +16,11 @@
 <body>
 
 <script>
-  window.kly = window.kly || {};
-  window.kly.site = "kapanlagi";
-
-  try {
-    window.parent.kly = window.kly;
-  } catch(e) {}
+  window.parent = window;
+  window.parent.kly = {
+    site: "kapanlagi",
+    platform: "desktop"
+  };
 </script>
 
 <div class="header25-trending">
@@ -50,9 +49,11 @@
 {% if snippet %}
 <script>
 (async function () {
-  window.kly = window.kly || {};
-  window.kly.site = "{{ site }}";
-  window.kly.platform = "desktop";
+  window.parent = window;
+  window.parent.kly = {
+    site: "{{ site }}",
+    platform: "desktop"
+  };
 
   const html = {{ snippet | tojson | safe }};
   const parser = new DOMParser();

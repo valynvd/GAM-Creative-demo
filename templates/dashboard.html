@@ -353,6 +353,30 @@
         setTimeout(() => toast.classList.remove("show"), 1500);
       });
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const leftInput = document.querySelector("input[name='left_img']");
+      const rightInput = document.querySelector("input[name='right_img']");
+      const frame = document.querySelector(".skin-preview");
+
+      if (leftInput) {
+        leftInput.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const url = URL.createObjectURL(file);
+          frame.src = `/preview/skinad?left=${encodeURIComponent(url)}&right=${encodeURIComponent(rightInput?.value || "")}`;
+        });
+      }
+
+      if (rightInput) {
+        rightInput.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const url = URL.createObjectURL(file);
+          frame.src = `/preview/skinad?right=${encodeURIComponent(url)}&left=${encodeURIComponent(leftInput?.value || "")}`;
+        });
+      }
+    });
   </script>
 </body>
 

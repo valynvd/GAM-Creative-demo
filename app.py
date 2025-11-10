@@ -37,16 +37,6 @@ def dashboard():
     left_img = request.form.get("left_saved", "")
     right_img = request.form.get("right_saved", "")
 
-    if "left_img" in request.files:
-        f = request.files["left_img"]
-        if f and f.filename:
-            left_img = "data:image/png;base64," + base64.b64encode(f.read()).decode('utf-8')
-
-    if "right_img" in request.files:
-        f = request.files["right_img"]
-        if f and f.filename:
-            right_img = "data:image/png;base64," + base64.b64encode(f.read()).decode('utf-8')
-
     return render_template(
         "dashboard.html",
         format=format,

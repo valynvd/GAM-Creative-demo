@@ -246,7 +246,7 @@
   <header>GAM Creative</header>
 
   <main>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" target="previewFrame">
       <div class="layout">
         <div class="card">
           <div class="card-header">Format</div>
@@ -334,7 +334,7 @@
               src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet | urlencode }}">
               {% elif format == 'skinad' %}
               <div class="preview-container skinad">
-                <iframe class="skin-preview" src="/preview/skinad"></iframe>
+                <iframe class="skin-preview" name="previewFrame"></iframe>
               </div>
               {% endif %}
           </div>

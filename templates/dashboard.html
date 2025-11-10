@@ -357,14 +357,21 @@
     document.addEventListener("DOMContentLoaded", () => {
       const leftInput = document.querySelector("input[name='left_img']");
       const rightInput = document.querySelector("input[name='right_img']");
-      const frame = document.querySelector(".skin-preview");
-
+      const leftSaved = document.querySelector("input[name='left_saved']");
+      const rightSaved = document.querySelector("input[name='right_saved']");
+      
+      function toBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onload = () => callback(reader.result);
+        reader.readAsDataURL(file);
+      }
       if (leftInput) {
         leftInput.addEventListener("change", (e) => {
           const file = e.target.files[0];
           if (!file) return;
-          const url = URL.createObjectURL(file);
-          frame.src = `/preview/skinad?left=${encodeURIComponent(url)}&right=${encodeURIComponent(rightInput?.value || "")}`;
+          toBase64(file, (b64) => {
+            leftSaved.value = b64;
+          });
         });
       }
 
@@ -372,8 +379,9 @@
         rightInput.addEventListener("change", (e) => {
           const file = e.target.files[0];
           if (!file) return;
-          const url = URL.createObjectURL(file);
-          frame.src = `/preview/skinad?right=${encodeURIComponent(url)}&left=${encodeURIComponent(leftInput?.value || "")}`;
+          toBase64(file, (b64) => {
+            rightSaved.value = b64;
+          });
         });
       }
     });

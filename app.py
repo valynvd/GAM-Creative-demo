@@ -59,16 +59,10 @@ def dashboard():
     )
 
 
-@app.route("/preview/skinad")
+@app.route("/preview/skinad", methods=["POST"])
 def preview_skinad():
-    left = request.args.get("left", "")
-    right = request.args.get("right", "")
-    
-    if left:
-        left = unquote(left)
-    if right:
-        right = unquote(right)
-
+    left = request.form.get("left_base64", "")
+    right = request.form.get("right_base64", "")
     return render_template("preview_skinad.html", left=left, right=right)
 
 @app.route("/preview/newstag")

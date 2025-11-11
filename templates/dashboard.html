@@ -309,13 +309,7 @@
         <div class="card">
           <div class="card-header">Generated Code</div>
           <div class="card-body">
-            <textarea id="snippetBox" readonly>
-              {% if format == 'skinad' %}
-              {{ snippet }}
-              {% else %}
-              {{ pure_snippet }}
-              {% endif %}
-            </textarea>
+            <textarea id="snippetBox" readonly>{% if format == 'skinad' %}{{ snippet }}{% else %}{{ pure_snippet }}{% endif %}</textarea>
             <input type="hidden" name="pure_snippet" value="{{ pure_snippet | e }}">
             <div class="copy-row">
               <button type="button" onclick="copySnippet()">Copy Code</button>

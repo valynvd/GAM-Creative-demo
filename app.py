@@ -32,6 +32,7 @@ def dashboard():
 </script>"""
 
     snippet = snippet_skinad if format == "skinad" else snippet_newstag
+    
     text = request.form.get("text", "")
     position = request.form.get("position", 0)
 

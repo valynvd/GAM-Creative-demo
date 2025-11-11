@@ -3,8 +3,7 @@ import os, base64
 from urllib.parse import quote, unquote      
 
 app = Flask(__name__, template_folder = "templates", static_folder = "static")
-UPLOAD_FOLDER = os.path.join(app.static_folder, "uploads")
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 
 @app.route("/", methods=["GET", "POST"])
 def dashboard():
@@ -43,14 +42,16 @@ def dashboard():
         if "left_img" in request.files:
             f = request.files["left_img"]
             if f and f.filename:
-                f.save(os.path.join(UPLOAD_FOLDER, "left.png"))
-                left_img = "/static/uploads/left.png"
+                temp_left = "/tmp/left.png"
+                f.save(temp_left)
+                left_img = temp_left
 
         if "right_img" in request.files:
             f = request.files["right_img"]
             if f and f.filename:
-                f.save(os.path.join(UPLOAD_FOLDER, "right.png"))
-                right_img = "/static/uploads/right.png"
+                temp_right = "/tmp/right.png"
+                f.save(temp_right)
+                right_img = temp_right
 
     return render_template(
         "dashboard.html",
@@ -66,8 +67,8 @@ def dashboard():
 
 @app.route("/preview/skinad")
 def preview_skinad():
-    left = "/static/uploads/left.png"
-    right = "/static/uploads/right.png"
+    left = "/tmp/left.png"
+    right = "/tmp/right.png"
     return render_template("preview_skinad.html", left=left, right=right)
 
 @app.route("/preview/newstag")

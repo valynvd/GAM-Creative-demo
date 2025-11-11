@@ -309,8 +309,14 @@
         <div class="card">
           <div class="card-header">Generated Code</div>
           <div class="card-body">
-            <textarea id="snippetBox" readonly>{{ snippet }}</textarea>
-            <input type="hidden" name="pure_snippet" value="{{ snippet | e }}">
+            <textarea id="snippetBox" readonly>
+              {% if format == 'skinad' %}
+              {{ snippet }}
+              {% else %}
+              {{ pure_snippet }}
+              {% endif %}
+            </textarea>
+            <input type="hidden" name="pure_snippet" value="{{ pure_snippet | e }}">
             <div class="copy-row">
               <button type="button" onclick="copySnippet()">Copy Code</button>
               <span id="copyToastInline" class="copy-toast-inline">✅ Copied!</span>
@@ -333,15 +339,16 @@
             <iframe
               src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet | urlencode }}">
               {% elif format == 'skinad' %}
-                {% if left_img or right_img %}
-                <div class="preview-container skinad">
-                  <iframe class="skin-preview" src="/preview/skinad"></iframe>
-                </div>
-                {% else %}
-                <div class="preview-container skinad" style="display:flex; justify-content:center; align-items:center; height:300px; color:#999; font-size:14px;">
-                  <span>No SkinAd preview yet.</span>
-                </div>
-                {% endif %}
+              {% if left_img or right_img %}
+              <div class="preview-container skinad">
+                <iframe class="skin-preview" src="/preview/skinad"></iframe>
+              </div>
+              {% else %}
+              <div class="preview-container skinad"
+                style="display:flex; justify-content:center; align-items:center; height:300px; color:#999; font-size:14px;">
+                <span>No SkinAd preview yet.</span>
+              </div>
+              {% endif %}
               {% endif %}
           </div>
         </div>

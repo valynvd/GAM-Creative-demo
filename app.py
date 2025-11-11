@@ -53,6 +53,7 @@ def dashboard():
         "dashboard.html",
         format=format,
         snippet=snippet,
+        pure_snippet=snippet,
         text=text,
         position=position,
         left_img=quote(left_img) if left_img else "",

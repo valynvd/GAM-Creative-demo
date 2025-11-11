@@ -66,7 +66,7 @@ def dashboard():
 @app.route("/preview/skinad")
 def preview_skinad():
     left = "/temp/left.png"
-    right = "/tmp/right.png"
+    right = "/temp/right.png"
     return render_template("preview_skinad.html", left=left, right=right)
 
 @app.route("/preview/newstag")

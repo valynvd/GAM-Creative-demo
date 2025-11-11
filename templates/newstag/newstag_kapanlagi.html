@@ -48,14 +48,10 @@
 
     <div class="header25-trending">
         <div class="header25-trending__list" id="tagContainer">
-            {% if remote_trending_html %}
-                {{ remote_trending_html | safe }}
-            {% else %}
             <a class="header25-trending__item"><span>Sample</span></a>
             <a class="header25-trending__item"><span>Sample</span></a>
             <a class="header25-trending__item"><span>Sample</span></a>
             <a class="header25-trending__item"><span>Sample</span></a>
-            {% endif %}
         </div>
     </div>
 
@@ -72,6 +68,52 @@
         if (pos >= children.length) container.appendChild(newTag);
         else container.insertBefore(newTag, children[pos]);
     </script>
+
+
+    {% if snippet %}
+    <script>
+        (async function () {
+            window.kly = window.kly || {};
+            window.kly.site = "{{ site }}".toLowerCase();
+            window.kly.platform = "desktop";
+
+
+            const html = {{ snippet | tojson | safe
+        }};
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const scriptTags = doc.querySelectorAll("script");
+
+        for (const s of scriptTags) {
+            await new Promise((done) => {
+                const scr = document.createElement("script");
+                if (s.src) {
+                    scr.src = s.src;
+                    scr.onload = done;
+                    scr.onerror = done;
+                    document.body.appendChild(scr);
+                } else {
+                    scr.textContent = s.textContent;
+                    document.body.appendChild(scr);
+                    done();
+                }
+            });
+        }
+
+        if (window.adInventory) window.parent.adInventory = window.adInventory;
+
+        if (window.adInventory && window.adInventory.init) {
+            window.adInventory.init("newstag", {
+                textTag: "{{ text }}",
+                landingPage: "%%VIEW_URL_ESC%%",
+                position: parseInt("{{ position }}", 10),
+                site: "{{ site }}".toLowerCase()
+            });
+        }
+}) ();
+    </script>
+    {% endif %}
+
 </body>
 
 </html>

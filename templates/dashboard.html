@@ -309,7 +309,7 @@
         <div class="card">
           <div class="card-header">Generated Code</div>
           <div class="card-body">
-            <textarea id="snippetBox" readonly>{{ snippet }}</textarea>
+            <textarea id="snippetBox" readonly>{{ snippet_copy }}</textarea>
             <div class="copy-row">
               <button type="button" onclick="copySnippet()">Copy Code</button>
               <span id="copyToastInline" class="copy-toast-inline">✅ Copied!</span>
@@ -330,7 +330,7 @@
               window.kly.platform = "desktop";
             </script>
             <iframe
-              src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet | urlencode }}"></iframe>
+              src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet_copy | urlencode }}"></iframe>
               {% elif format == 'skinad' %}
               {% if left_img or right_img %}
               <div class="preview-container skinad">

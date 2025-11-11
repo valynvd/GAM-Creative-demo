@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, send_file
 import os, base64
 from urllib.parse import quote, unquote      
 
@@ -42,16 +42,14 @@ def dashboard():
         if "left_img" in request.files:
             f = request.files["left_img"]
             if f and f.filename:
-                temp_left = "/tmp/left.png"
-                f.save(temp_left)
-                left_img = temp_left
+                f.save("/tmp/left.png")
+                left_img = "/temp/left.png"
 
         if "right_img" in request.files:
             f = request.files["right_img"]
             if f and f.filename:
-                temp_right = "/tmp/right.png"
-                f.save(temp_right)
-                right_img = temp_right
+                f.save("/tmp/right.png")
+                right_img = "/temp/right.png"
 
     return render_template(
         "dashboard.html",
@@ -67,7 +65,7 @@ def dashboard():
 
 @app.route("/preview/skinad")
 def preview_skinad():
-    left = "/tmp/left.png"
+    left = "/temp/left.png"
     right = "/tmp/right.png"
     return render_template("preview_skinad.html", left=left, right=right)
 
@@ -114,6 +112,12 @@ window.parent.kly = window.parent.kly || {{}};
     template = template_map.get(site, "newstag/newstag_kapanlagi.html")
     return render_template(template, text=text, site=site, position=position, snippet=snippet)
 
+@app.route("/temp/<filename>")
+def serve_temp(filename):
+    filepath = f"/tmp/{filename}"
+    if os.path.exists(filepath):
+        return send_file(filepath)
+    return "", 404
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -40,16 +40,14 @@ def dashboard():
 
     if format == "skinad":
         if "left_img" in request.files:
-            f = request.files["left_img"]
-            if f and f.filename:
-                f.save("/tmp/left.png")
-                left_img = "/temp/left.png"
+            left_data = left_img.split(",")[1]
+            with open("/tmp/left.png", "wb") as f:
+                f.write(base64.b64decode(left_data))
 
         if "right_img" in request.files:
-            f = request.files["right_img"]
-            if f and f.filename:
-                f.save("/tmp/right.png")
-                right_img = "/temp/right.png"
+            right_data = right_img.split(",")[1]
+            with open("/tmp/right.png", "wb") as f:
+                f.write(base64.b64decode(right_data))
 
     return render_template(
         "dashboard.html",

@@ -333,9 +333,15 @@
             <iframe
               src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet | urlencode }}">
               {% elif format == 'skinad' %}
-              <div class="preview-container skinad">
-                <iframe class="skin-preview" src="/preview/skinad"></iframe>
-              </div>
+                {% if left_img or right_img %}
+                <div class="preview-container skinad">
+                  <iframe class="skin-preview" src="/preview/skinad"></iframe>
+                </div>
+                {% else %}
+                <div class="preview-container skinad" style="display:flex; justify-content:center; align-items:center; height:300px; color:#999; font-size:14px;">
+                  <span>No SkinAd preview yet. Upload images and click "Upload & Preview".</span>
+                </div>
+                {% endif %}
               {% endif %}
           </div>
         </div>
@@ -359,7 +365,7 @@
       const rightInput = document.querySelector("input[name='right_img']");
       const leftSaved = document.querySelector("input[name='left_saved']");
       const rightSaved = document.querySelector("input[name='right_saved']");
-      
+
       function toBase64(file, callback) {
         const reader = new FileReader();
         reader.onload = () => callback(reader.result);

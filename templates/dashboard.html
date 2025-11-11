@@ -7,17 +7,17 @@
 
   <style>
     :root {
-      --primary: #5B5BD6;
-      --primary-hover: #4949B8;
-      --primary-light: #F3F3FF;
+      --primary: #6A6AE8;
+      --primary-hover: #5757D1;
+      --primary-light: rgba(106, 106, 232, 0.15);
       --accent: #706FD3;
-      --bg: #F9FAFB;
+      --bg: #F2F3F5;
       --surface: #FFFFFF;
-      --border: #E5E7EB;
+      --border: rgba(0,0,0,0.08);
       --text-main: #1F2937;
       --text-muted: #6B7280;
-      --radius: 16px;
-      --shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+      --radius: 14px;
+      --shadow: 0 1px 4px rgba(0,0,0,0.05), 0 8px 20px rgba(0,0,0,0.04);
     }
 
 
@@ -40,13 +40,12 @@
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       padding: 18px 32px;
-      font-weight: 700;
-      font-size: 20px;
+      font-weight: 600;
+      font-size: 19px;
       color: var(--text-main);
       position: sticky;
       top: 0;
-      z-index: 100;
-      backdrop-filter: blur(8px);
+      z-index: 10;
     }
 
     main {
@@ -58,19 +57,17 @@
       gap: 32px;
     }
 
-    /* Grid layout */
     .layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
-      align-items: stretch;
     }
 
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-soft);
       display: flex;
       flex-direction: column;
     }
@@ -78,17 +75,15 @@
     .card-header {
       padding: 18px 22px;
       border-bottom: 1px solid var(--border);
-      font-weight: 700;
-      font-size: 16px;
-      background: #f9fafb;
+      font-weight: 600;
+      background: #FAFAFA;
     }
 
     .card-body {
-      padding: 20px 24px;
-      flex: 1;
+      padding: 22px 26px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: 18px;
     }
 
     .form-group {
@@ -96,11 +91,9 @@
     }
 
     label {
-      display: block;
       margin-bottom: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-main);
+      font-size: 15px;
+      font-weight: 500;
     }
 
     select,
@@ -110,9 +103,9 @@
       width: 100%;
       border-radius: 10px;
       border: 1.5px solid var(--border);
-      padding: 10px 14px;
-      font-size: 14px;
-      transition: all 0.2s ease;
+      padding: 9px 13px;
+      font-size: 15px;
+      transition: border .2s ease, box-shadow .2s ease;
       background: white;
     }
 
@@ -162,12 +155,9 @@
     }
 
     textarea {
-      resize: vertical;
       min-height: 200px;
       font-family: 'JetBrains Mono', monospace;
       line-height: 1.5;
-      background: #f9fafb;
-      margin-bottom: 14px;
     }
 
     .copy-row {

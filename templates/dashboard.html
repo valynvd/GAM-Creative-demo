@@ -70,6 +70,12 @@
       box-shadow: var(--shadow-soft);
       display: flex;
       flex-direction: column;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0,0,0,0.06);
     }
 
     .card-header {

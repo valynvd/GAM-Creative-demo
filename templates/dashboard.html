@@ -37,7 +37,7 @@
     }
 
     header {
-      background: var(--surface);
+      background: linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
       border-bottom: 1px solid var(--border);
       padding: 18px 32px;
       font-weight: 600;
@@ -46,6 +46,9 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     main {
@@ -70,11 +73,11 @@
       box-shadow: var(--shadow-soft);
       display: flex;
       flex-direction: column;
-      transition: transform .15s ease, box-shadow .15s ease;
+      transition: all 0.2 ease;
     }
 
     .card:hover {
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
     }
 
@@ -203,11 +206,13 @@
     }
 
     .preview-container {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      background: #f9fafc;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
       overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
+
 
     .preview-container.skinad {
       border: none;
@@ -223,9 +228,12 @@
     }
 
     iframe.loading {
+      filter: blur(2px);
       opacity: 0.5;
+      transition: all 0.3s ease;
     }
-    
+
+
     iframe.skin-preview {
       height: 100vh;
     }

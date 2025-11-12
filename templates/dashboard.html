@@ -10,6 +10,7 @@
       --primary: #6A6AE8;
       --primary-hover: #5757D1;
       --primary-light: rgba(106, 106, 232, 0.15);
+      --accent: #706FD3;
       --bg: #F2F3F5;
       --surface: #FFFFFF;
       --border: rgba(0, 0, 0, 0.08);
@@ -18,6 +19,8 @@
       --radius: 14px;
       --shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.04);
     }
+
+
 
     * {
       box-sizing: border-box;
@@ -64,15 +67,15 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-soft);
       display: flex;
       flex-direction: column;
-      transition: all 0.2s ease;
+      transition: transform .15s ease, box-shadow .15s ease;
     }
 
     .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
     }
 
     .card-header {
@@ -87,6 +90,14 @@
       display: flex;
       flex-direction: column;
       gap: 18px;
+    }
+
+    .card-body>div:last-child button {
+      margin-top: 6px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
     }
 
     label {
@@ -104,7 +115,7 @@
       border: 1.5px solid var(--border);
       padding: 9px 13px;
       font-size: 15px;
-      transition: border 0.2s ease, box-shadow 0.2s ease;
+      transition: border .2s ease, box-shadow .2s ease;
       background: white;
     }
 
@@ -180,18 +191,15 @@
     .copy-toast-inline.show {
       opacity: 1;
       transform: translateY(0);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    iframe {
-      width: 100%;
-      height: 80vh;
-      border: none;
-      display: block;
-      transition: opacity 0.25s ease;
+    .preview-card {
+      margin-top: 10px;
     }
 
-    iframe.loading {
-      opacity: 0.5;
+    .preview-section {
+      margin-top: 30px;
     }
 
     .preview-container {
@@ -199,6 +207,38 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
+    }
+
+    .preview-container.skinad {
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    iframe {
+      width: 100%;
+      height: 80vh;
+      border: none;
+      display: block;
+    }
+
+    iframe.skin-preview {
+      height: 100vh;
+    }
+
+    .placeholder {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 70px 30px;
+      text-align: center;
+      color: var(--text-muted);
+      background: var(--bg);
+    }
+
+    @media (max-width: 1200px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -232,12 +272,12 @@
 
               <div class="form-group">
                 <label>Tag Text</label>
-                <input type="text" id="textInput" name="text" value="{{ text }}" placeholder="Trending">
+                <input id="textInput" type="text" name="text" value="{{ text }}" placeholder="Trending">
               </div>
 
               <div class="form-group">
                 <label>Position</label>
-                <input type="number" id="positionInput" name="position" min="0" value="{{ position }}" placeholder="0">
+                <input id="positionInput" type="number" name="position" min="0" value="{{ position }}" placeholder="0">
               </div>
               {% endif %}
 
@@ -251,6 +291,9 @@
                 <label>Right Image</label>
                 <input type="file" name="right_img" accept="image/*">
               </div>
+
+              <input type="hidden" name="left_saved" value="{{ left_img if left_img }}">
+              <input type="hidden" name="right_saved" value="{{ right_img if right_img }}">
               {% endif %}
             </div>
 
@@ -276,21 +319,33 @@
         </div>
       </div>
 
+      <div class="preview-section"></div>
       <div class="card preview-card">
         <div class="card-header">Preview</div>
         <div class="card-body" style="padding:0;">
           {% if format == 'newstag' %}
           <div class="preview-container">
+            <script>
+              window.kly = window.kly || {};
+              window.kly.site = "{{ site }}";
+              window.kly.platform = "desktop";
+            </script>
             <iframe id="previewFrame"
               src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet_copy | urlencode }}"></iframe>
+            {% elif format == 'skinad' %}
+            {% if left_img or right_img %}
+            <div class="preview-container skinad">
+              <iframe class="skin-preview" src="/preview/skinad"></iframe>
+            </div>
+            {% else %}
+            <div class="preview-container skinad"
+              style="display:flex; justify-content:center; align-items:center; height:300px; color:#999; font-size:14px;">
+              <span>No SkinAd preview yet.</span>
+            </div>
+            {% endif %}
+            {% endif %}
           </div>
-          {% elif format == 'skinad' %}
-          <div class="preview-container">
-            <iframe class="skin-preview" src="/preview/skinad"></iframe>
-          </div>
-          {% endif %}
         </div>
-      </div>
     </form>
   </main>
 
@@ -316,7 +371,6 @@
       iframe.classList.add("loading");
       const url = `/preview/newstag?text=${encodeURIComponent(text)}&position=${position}&site=${encodeURIComponent(site)}`;
       iframe.src = url;
-
       iframe.onload = () => iframe.classList.remove("loading");
     }
 
@@ -328,7 +382,6 @@
 
     document.addEventListener("DOMContentLoaded", () => {
       const format = "{{ format }}";
-  // SKINAD
       const leftInput = document.querySelector("input[name='left_img']");
       const rightInput = document.querySelector("input[name='right_img']");
       const leftSaved = document.querySelector("input[name='left_saved']");
@@ -339,26 +392,26 @@
         reader.onload = () => callback(reader.result);
         reader.readAsDataURL(file);
       }
-
       if (leftInput) {
         leftInput.addEventListener("change", (e) => {
           const file = e.target.files[0];
           if (!file) return;
-          toBase64(file, (b64) => leftSaved.value = b64);
-          showLocalPreview();
+          toBase64(file, (b64) => {
+            leftSaved.value = b64;
+          });
         });
       }
-
       if (rightInput) {
         rightInput.addEventListener("change", (e) => {
           const file = e.target.files[0];
           if (!file) return;
-          toBase64(file, (b64) => rightSaved.value = b64);
-          showLocalPreview();
+          toBase64(file, (b64) => {
+            rightSaved.value = b64;
+          });
         });
       }
-  // NEWSTAG
-      if (format === "newstag"){
+
+      if (format === "newstag") {
         const textInput = document.getElementById("textInput");
         const positionInput = document.getElementById("positionInput");
         const siteSelect = document.getElementById("siteSelect");
@@ -367,6 +420,7 @@
         if (positionInput) positionInput.addEventListener("input", debouncePreview);
         if (siteSelect) siteSelect.addEventListener("change", updatePreview);
       }
+
     });
   </script>
 </body>

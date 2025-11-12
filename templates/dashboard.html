@@ -20,8 +20,6 @@
       --shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 8px 20px rgba(0, 0, 0, 0.04);
     }
 
-
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -70,16 +68,17 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
       transition: transform .15s ease, box-shadow .15s ease;
     }
 
     .card:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
-
+      transform: translateY(-2px);
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(106, 106, 232, 0.25),
+        0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .card-header {
@@ -96,15 +95,12 @@
       gap: 18px;
     }
 
-    .card-body>div:last-child button {
-      margin-top: 6px;
-    }
-
     .form-group {
       margin-bottom: 16px;
     }
 
     label {
+      display: block;
       margin-bottom: 6px;
       font-size: 15px;
       font-weight: 500;
@@ -165,7 +161,12 @@
 
     button:hover {
       background: var(--primary-hover);
-      transform: translateY(-1px);
+      transform: scale(1.03);
+      box-shadow: 0 4px 10px rgba(99, 102, 241, 0.35);
+    }
+
+    button:active {
+      transform: scale(0.97);
     }
 
     textarea {
@@ -195,15 +196,10 @@
     .copy-toast-inline.show {
       opacity: 1;
       transform: translateY(0);
-      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     .preview-card {
       margin-top: 10px;
-    }
-
-    .preview-section {
-      margin-top: 30px;
     }
 
     .preview-container {
@@ -213,7 +209,6 @@
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
-
 
     .preview-container.skinad {
       border: none;
@@ -226,30 +221,25 @@
       height: 80vh;
       border: none;
       display: block;
+      transition: all 0.3s ease;
     }
 
     iframe.loading {
       filter: blur(0.5px);
       opacity: 0.5;
-      transition: all 0.3s ease;
     }
 
     iframe.skin-preview {
       height: 100vh;
     }
 
-    .placeholder {
-      border: 2px dashed var(--border);
-      border-radius: var(--radius);
-      padding: 70px 30px;
-      text-align: center;
-      color: var(--text-muted);
-      background: var(--bg);
-    }
-
     @media (max-width: 1200px) {
       .layout {
         grid-template-columns: 1fr;
+      }
+
+      main {
+        padding: 20px;
       }
     }
   </style>
@@ -335,6 +325,7 @@
       <div class="card preview-card">
         <div class="card-header">Preview</div>
         <div class="card-body" style="padding:0;">
+
           {% if format == 'newstag' %}
           <div class="preview-container">
             <script>
@@ -344,7 +335,8 @@
             </script>
             <iframe id="previewFrame"
               src="/preview/newstag?text={{ text }}&position={{ position }}&site={{ site }}&snippet={{ snippet_copy | urlencode }}"></iframe>
-            {% elif format == 'skinad' %}
+
+          {% elif format == 'skinad' %}
             {% if left_img or right_img %}
             <div class="preview-container skinad">
               <iframe class="skin-preview" src="/preview/skinad"></iframe>
@@ -355,9 +347,10 @@
               <span>No SkinAd preview yet.</span>
             </div>
             {% endif %}
-            {% endif %}
+          {% endif %}
           </div>
         </div>
+      </div>
     </form>
   </main>
 
@@ -404,22 +397,20 @@
         reader.onload = () => callback(reader.result);
         reader.readAsDataURL(file);
       }
+
       if (leftInput) {
         leftInput.addEventListener("change", (e) => {
           const file = e.target.files[0];
           if (!file) return;
-          toBase64(file, (b64) => {
-            leftSaved.value = b64;
-          });
+          toBase64(file, (b64) => leftSaved.value = b64);
         });
       }
+
       if (rightInput) {
         rightInput.addEventListener("change", (e) => {
           const file = e.target.files[0];
           if (!file) return;
-          toBase64(file, (b64) => {
-            rightSaved.value = b64;
-          });
+          toBase64(file, (b64) => rightSaved.value = b64);
         });
       }
 
@@ -432,7 +423,6 @@
         if (positionInput) positionInput.addEventListener("input", debouncePreview);
         if (siteSelect) siteSelect.addEventListener("change", updatePreview);
       }
-
     });
   </script>
 </body>

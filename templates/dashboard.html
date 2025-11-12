@@ -327,13 +327,46 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      const textInput = document.getElementById("textInput");
-      const positionInput = document.getElementById("positionInput");
-      const siteSelect = document.getElementById("siteSelect");
+      const format = "{{ format }}";
+  // SKINAD
+      const leftInput = document.querySelector("input[name='left_img']");
+      const rightInput = document.querySelector("input[name='right_img']");
+      const leftSaved = document.querySelector("input[name='left_saved']");
+      const rightSaved = document.querySelector("input[name='right_saved']");
 
-      if (textInput) textInput.addEventListener("input", debouncePreview);
-      if (positionInput) positionInput.addEventListener("input", debouncePreview);
-      if (siteSelect) siteSelect.addEventListener("change", updatePreview);
+      function toBase64(file, callback) {
+        const reader = new FileReader();
+        reader.onload = () => callback(reader.result);
+        reader.readAsDataURL(file);
+      }
+
+      if (leftInput) {
+        leftInput.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          toBase64(file, (b64) => leftSaved.value = b64);
+          showLocalPreview();
+        });
+      }
+
+      if (rightInput) {
+        rightInput.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          toBase64(file, (b64) => rightSaved.value = b64);
+          showLocalPreview();
+        });
+      }
+  // NEWSTAG
+      if (format === "newstag"){
+        const textInput = document.getElementById("textInput");
+        const positionInput = document.getElementById("positionInput");
+        const siteSelect = document.getElementById("siteSelect");
+
+        if (textInput) textInput.addEventListener("input", debouncePreview);
+        if (positionInput) positionInput.addEventListener("input", debouncePreview);
+        if (siteSelect) siteSelect.addEventListener("change", updatePreview);
+      }
     });
   </script>
 </body>
